@@ -15,6 +15,16 @@ public class Member {
     //@Column(name="username") // 만약에 column이름이 username으로 되어있다면 이렇게 설정하면 됨.
     private String name;
 
+    public Member(){    // 동적인 객체 생성을 위한 기본 생성자.
+
+    }
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+
     public Long getId() {
         return id;
     }
