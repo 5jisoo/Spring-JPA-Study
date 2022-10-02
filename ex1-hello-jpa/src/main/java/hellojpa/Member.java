@@ -1,43 +1,37 @@
 package hellojpa;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-// @Table(name="USER") // 만약 DB에 테이블 이름이 USER라고 되어있다면 이렇게 설정.
 public class Member {
 
     @Id
     private Long id;
 
-    //@Column(name="username") // 만약에 column이름이 username으로 되어있다면 이렇게 설정하면 됨.
-    private String name;
+    @Column(name = "name")          // DB에는 name이라고 지정
+    private String username;
 
-    public Member(){    // 동적인 객체 생성을 위한 기본 생성자.
+    private Integer age;
+
+    @Enumerated(EnumType.STRING)    // DB에서 Enum타입을 구현하기 위해 사용하는 애노테이션
+    private RoleType roleType;
+
+    @Temporal(TemporalType.TIMESTAMP)   // TemporalType에는 DATE, TIME, TIMESTAMP가 있음. - 날짜 정보 매핑
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Lob                                // BLOB, CLOB 매핑 - 큰 컨텐츠를 넣고 싶은 경우.
+    private String description;
+
+    @Transient      // DB에서 관리하지 말아달라는 뜻
+    private int temp;
+
+    public Member() {    // 동적인 객체 생성을 위한 기본 생성자.
 
     }
 
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
