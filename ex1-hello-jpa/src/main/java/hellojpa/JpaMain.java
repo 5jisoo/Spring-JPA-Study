@@ -18,15 +18,19 @@ public class JpaMain {
 
         try {
 
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
             // 저장
             Member member = new Member();
             member.setUsername("member1");
+            member.setTeam(team);   // 이런식으로 Member에서 team을 설정해주어야 함!
             em.persist(member);
 
-            Team team = new Team();
-            team.setName("TeamA");
-            team.getMembers().add(member);  // 연관관계 개념으로는 member를 집어넣음
-            em.persist(team);
+
+            team.getMembers().add(member);  // 이렇게 둘다 넣으면 됨
+
 
             em.flush();
             em.clear();
