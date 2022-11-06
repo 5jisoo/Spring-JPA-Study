@@ -7,10 +7,14 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name", nullable = false)          // DB에는 name이라고 지정
+    @Column(name = "USERNAME", nullable = false)
     private String username;
+
+    @Column(name = "TEAM_ID", nullable = false)
+    private Long teamId;
 
     public Member() {    // 동적인 객체 생성을 위한 기본 생성자.
 
@@ -22,6 +26,14 @@ public class Member {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     public String getUsername() {
