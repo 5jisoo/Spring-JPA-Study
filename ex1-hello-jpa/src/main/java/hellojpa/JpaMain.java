@@ -28,21 +28,16 @@ public class JpaMain {
             member.setTeam(team);   // 이렇게 하면 알아서 JPA가 team의 key를 member에 FK로 insert해줌
             em.persist(member);
 
-            // 새로운 팀B
-            Team teamB = new Team();
-            teamB.setName("TeamB");
-            em.persist(teamB);
-
-            member.setTeam(teamB);
+            em.flush();
+            em.clear();
 
             // 멤버 조회
             Member findMember = em.find(Member.class, member.getId());
 
-            Team findTeam = findMember.getTeam();   // 이런식으로 바로 끄집어낼 수 있다!
-
-            // 확인용
-            System.out.println("findTeam = " + findTeam.getName());
-
+            List<Member> members = findMember.getTeam().getMembers();
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
 
 
             tx.commit();
