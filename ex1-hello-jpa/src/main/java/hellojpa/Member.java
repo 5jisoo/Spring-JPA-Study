@@ -13,8 +13,13 @@ public class Member {
     @Column(name = "USERNAME", nullable = false)
     private String username;
 
-    @Column(name = "TEAM_ID", nullable = false)
-    private Long teamId;
+//    @Column(name = "TEAM_ID", nullable = false)
+//    private Long teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
 
     public Member() {    // 동적인 객체 생성을 위한 기본 생성자.
 
@@ -28,12 +33,12 @@ public class Member {
         this.id = id;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public String getUsername() {

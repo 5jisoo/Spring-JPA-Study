@@ -18,22 +18,30 @@ public class JpaMain {
 
         try {
 
+            // 저장
             Team team = new Team();
             team.setName("TeamA");
             em.persist(team);
 
             Member member = new Member();
             member.setUsername("member1");
-
-            member.setTeamId(team.getId());
+            member.setTeam(team);   // 이렇게 하면 알아서 JPA가 team의 key를 member에 FK로 insert해줌
             em.persist(member);
 
+            // 새로운 팀B
+            Team teamB = new Team();
+            teamB.setName("TeamB");
+            em.persist(teamB);
 
-            // 멤버 팀 조회 -> 객체지향스럽지 않다!
+            member.setTeam(teamB);
+
+            // 멤버 조회
             Member findMember = em.find(Member.class, member.getId());
 
-            Long findTeamId = findMember.getTeamId();
-            Team team1 = em.find(Team.class, findTeamId);
+            Team findTeam = findMember.getTeam();   // 이런식으로 바로 끄집어낼 수 있다!
+
+            // 확인용
+            System.out.println("findTeam = " + findTeam.getName());
 
 
 
