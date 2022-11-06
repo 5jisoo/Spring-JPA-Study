@@ -37,8 +37,9 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) { // 로직추가로 인한 메서드명 변경
         this.team = team;
+        team.getMembers().add(this);
     }
 
     public String getUsername() {
@@ -47,5 +48,14 @@ public class Member {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", team=" + team +
+                '}';
     }
 }

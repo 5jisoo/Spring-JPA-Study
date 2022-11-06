@@ -16,6 +16,12 @@ public class Team {
     @OneToMany(mappedBy = "team")   //mapped By? Member에서 Team을 연결하는 변수명을 적어주어야 함
     private List<Member> members = new ArrayList<>();
 
+
+    public void addMember(Member member) {
+        member.changeTeam(this);
+ //       members.add(member);  // Team에 AddMember 추가로 변경
+    }
+
     public Long getId() {
         return id;
     }
@@ -38,5 +44,14 @@ public class Team {
 
     public void setMembers(List<Member> members) {
         this.members = members;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", members=" + members +
+                '}';
     }
 }
