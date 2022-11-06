@@ -19,26 +19,17 @@ public class JpaMain {
         try {
 
             // 저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team);   // 이렇게 하면 알아서 JPA가 team의 key를 member에 FK로 insert해줌
             em.persist(member);
+
+            Team team = new Team();
+            team.setName("TeamA");
+            team.getMembers().add(member);  // 연관관계 개념으로는 member를 집어넣음
+            em.persist(team);
 
             em.flush();
             em.clear();
-
-            // 멤버 조회
-            Member findMember = em.find(Member.class, member.getId());
-
-            List<Member> members = findMember.getTeam().getMembers();
-            for (Member m : members) {
-                System.out.println("m = " + m.getUsername());
-            }
-
 
             tx.commit();
         } catch (Exception e) {
