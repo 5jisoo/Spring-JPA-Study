@@ -50,12 +50,13 @@ public class Member {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", team=" + team +
-                '}';
-    }
+    // toString을 웬만하면 사용하지 않고, 사용해도 이런식으로 사용하진 말자..>!
+//    @Override
+//    public String toString() {
+//        return "Member{" +
+//                "id=" + id +
+//                ", username='" + username + '\'' +
+//                ", team=" + team +
+//                '}';
+//    }
 }

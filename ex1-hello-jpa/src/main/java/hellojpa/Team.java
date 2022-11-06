@@ -46,12 +46,13 @@ public class Team {
         this.members = members;
     }
 
-    @Override
-    public String toString() {
-        return "Team{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", members=" + members +
-                '}';
-    }
+    // toString을 웬만하면 사용하지 않고, 사용해도 이런식으로 사용하진 말자..>!
+//    @Override
+//    public String toString() {
+//        return "Team{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", members=" + members +
+//                '}';
+//    }
 }
