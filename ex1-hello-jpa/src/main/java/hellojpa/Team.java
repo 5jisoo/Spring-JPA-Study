@@ -13,14 +13,10 @@ public class Team {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "team")   //mapped By? Member에서 Team을 연결하는 변수명을 적어주어야 함
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
 
-
-    public void addMember(Member member) {
-        member.changeTeam(this);
- //       members.add(member);  // Team에 AddMember 추가로 변경
-    }
 
     public Long getId() {
         return id;
@@ -45,14 +41,4 @@ public class Team {
     public void setMembers(List<Member> members) {
         this.members = members;
     }
-
-    // toString을 웬만하면 사용하지 않고, 사용해도 이런식으로 사용하진 말자..>!
-//    @Override
-//    public String toString() {
-//        return "Team{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", members=" + members +
-//                '}';
-//    }
 }

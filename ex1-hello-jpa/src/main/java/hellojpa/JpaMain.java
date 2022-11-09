@@ -18,26 +18,15 @@ public class JpaMain {
 
         try {
 
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            // 저장
             Member member = new Member();
             member.setUsername("member1");
-//            member.changeTeam(team);   // 이런식으로 Member에서 team을 설정해주어야 함!
-
-            team.addMember(member);
             em.persist(member);
 
+            Team team = new Team();
+            team.setName("teamA");
 
-            em.flush();
-            em.clear();
-
-            Team findTeam = em.find(Team.class, team.getId());
-            System.out.println("====================");
-            System.out.println("members = " + findTeam);
-            System.out.println("====================");
+            team.getMembers().add(member);
+            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {
