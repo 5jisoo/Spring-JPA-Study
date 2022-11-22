@@ -1,8 +1,6 @@
 package jpabook.jpashop;
 
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderItem;
+import jpabook.jpashop.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,15 +19,11 @@ public class JpaMain {
 
         try {
 
-            Order order = new Order();
-            em.persist(order);
-//            order.addOrderItem(new OrderItem());
+            Book book = new Book();
+            book.setName("JPA");
+            book.setAuthor("김영한");
 
-            OrderItem orderItem = new OrderItem();
-
-            orderItem.setOrder(order);  // 이렇게 양방향 연관관계가 아니게 애플리케이션을 개발해도 전혀 문제가 안됨!!
-            em.persist(orderItem);
-
+            em.persist(book);
 
             tx.commit();
         } catch (Exception e) {
