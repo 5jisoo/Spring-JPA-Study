@@ -3,7 +3,7 @@ package hellojpa.section7;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-@Entity
+//@Entity
 // @DiscriminatorValue("Mov")
 public class Movie extends Item {
 

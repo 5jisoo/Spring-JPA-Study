@@ -2,13 +2,13 @@ package hellojpa.section7;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 // @DiscriminatorColumn // TABLE_PER_CLASS 에서는 필요 없음
 public abstract class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

@@ -1,13 +1,10 @@
 package hellojpa;
 
-import hellojpa.section7.Item;
-import hellojpa.section7.Movie;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class JpaMain {
 
@@ -21,19 +18,15 @@ public class JpaMain {
 
         try {
 
-            Movie movie = new Movie();
-            movie.setDirector("aaaaa");
-            movie.setActor("bbbb");
-            movie.setName("바람");
-            movie.setPrice(10000);
+            Member member = new Member();
+            member.setUsername("user1");
+            member.setCreatedBy("kim");
+            member.setCreatedDate(LocalDateTime.now());
 
-            em.persist(movie);
+            em.persist(member);
 
             em.flush();
-            em.clear();     // 영속성 컨텍스트 날려주기 위한 용도
-
-            Item item = em.find(Item.class, movie.getId());
-            System.out.println("item = " + item);
+            em.clear();
 
             tx.commit();
         } catch (Exception e) {
