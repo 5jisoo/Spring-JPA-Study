@@ -3,9 +3,9 @@ package hellojpa.section7;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-// @DiscriminatorColumn // SINGLE_TABLE 에서는 이거 없어도 생김!
-public class Item {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+// @DiscriminatorColumn // TABLE_PER_CLASS 에서는 필요 없음
+public abstract class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

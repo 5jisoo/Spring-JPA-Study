@@ -1,5 +1,6 @@
 package hellojpa;
 
+import hellojpa.section7.Item;
 import hellojpa.section7.Movie;
 
 import javax.persistence.EntityManager;
@@ -31,8 +32,8 @@ public class JpaMain {
             em.flush();
             em.clear();     // 영속성 컨텍스트 날려주기 위한 용도
 
-            Movie findMovie = em.find(Movie.class, movie.getId());
-            System.out.println("findMovie = " + findMovie);
+            Item item = em.find(Item.class, movie.getId());
+            System.out.println("item = " + item);
 
             tx.commit();
         } catch (Exception e) {
