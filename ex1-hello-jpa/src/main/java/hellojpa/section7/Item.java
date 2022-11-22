@@ -3,8 +3,8 @@ package hellojpa.section7;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn // (name = "D_TYPE")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+// @DiscriminatorColumn // SINGLE_TABLE 에서는 이거 없어도 생김!
 public class Item {
 
     @Id
