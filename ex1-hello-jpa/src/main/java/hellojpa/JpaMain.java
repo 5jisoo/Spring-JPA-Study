@@ -17,28 +17,21 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.setTeam(team);
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
 
-            team.getMembers().add(member1);
-            em.persist(member1);
+            // 여기서 parent가 persist 가 될 때, child도 같이 persist 됐으면 좋겠다...!
+            em.persist(parent);
 
             em.flush();
             em.clear();
 
-            Member m = em.find(Member.class, member1.getId());     // reference
-            // List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
-
-            System.out.println("m = " + m.getTeam().getClass());
-
-            System.out.println("=====================");
-            m.getTeam().getName();
-            System.out.println("=====================");
+            Parent findParent = em.find(Parent.class, parent.getId());
+            findParent.getChildList().remove(0);
 
             tx.commit();
         } catch (Exception e) {
