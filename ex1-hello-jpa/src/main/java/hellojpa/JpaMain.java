@@ -19,12 +19,25 @@ public class JpaMain {
 
         try {
 
-            Member member = new Member();
-            member.setUsername("hello");
-            member.setHomeAddress(new Address("city1", "street1", "1000"));
-            member.setWorkPeriod(new Period());
+            Address address = new Address("city", "street", "10000");
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
 
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setUsername("hello");
+            member1.setHomeAddress(address);
+
+            Member member2 = new Member();
+            member2.setUsername("hello");
+            member2.setHomeAddress(copyAddress);    // 동일한 address 를 사용하고 있음
+
+//            member1.getHomeAddress().setCity("newCity");      // 이렇게 값 변경이 불가능해지면서 side effect를 막는다!
+
+            // 새로운 값으로 변경하고 싶다면
+            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
+            member1.setHomeAddress(newAddress);
+
+            em.persist(member1);
+            em.persist(member2);
 
             tx.commit();
         } catch (Exception e) {
