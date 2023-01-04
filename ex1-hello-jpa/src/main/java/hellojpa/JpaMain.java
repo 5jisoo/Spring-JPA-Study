@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 public class JpaMain {
@@ -19,25 +20,36 @@ public class JpaMain {
 
         try {
 
-            Address address = new Address("city", "street", "10000");
-            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("homeCity", "street", "10000"));
 
-            Member member1 = new Member();
-            member1.setUsername("hello");
-            member1.setHomeAddress(address);
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-            Member member2 = new Member();
-            member2.setUsername("hello");
-            member2.setHomeAddress(copyAddress);    // 동일한 address 를 사용하고 있음
+            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+            member.getAddressHistory().add(new Address("old2", "street", "10000"));
 
-//            member1.getHomeAddress().setCity("newCity");      // 이렇게 값 변경이 불가능해지면서 side effect를 막는다!
+            em.persist(member);
 
-            // 새로운 값으로 변경하고 싶다면
-            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode());
-            member1.setHomeAddress(newAddress);
+            em.flush();
+            em.clear();
 
-            em.persist(member1);
-            em.persist(member2);
+            // 깔끔하게 다시 조회
+            System.out.println("================= START =====================");
+            Member findMember = em.find(Member.class, member.getId());
+
+            List<Address> addressHistory = findMember.getAddressHistory();
+            for (Address address : addressHistory) {
+                System.out.println("address.getCity() = " + address.getCity());
+            }
+
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
 
             tx.commit();
         } catch (Exception e) {
