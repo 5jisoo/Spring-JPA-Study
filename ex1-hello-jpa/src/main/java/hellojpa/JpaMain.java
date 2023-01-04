@@ -4,6 +4,9 @@ import hellojpa.section7.AddressEntity;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -20,44 +23,43 @@ public class JpaMain {
         tx.begin();
 
         try {
-
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setHomeAddress(new Address("homeCity", "street", "10000"));
-
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("족발");
-            member.getFavoriteFoods().add("피자");
-
-//            member.getAddressHistory().add(new Address("old1", "street", "10000"));
-//            member.getAddressHistory().add(new Address("old2", "street", "10000"));
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            // 깔끔하게 다시 조회
-            System.out.println("================= START =====================");
-            Member findMember = em.find(Member.class, member.getId());
-
-            // homeCity -> newCity
-//            findMember.getHomeAddress().setCity("newCity");   // X
-            Address a = findMember.getHomeAddress();
-            // 이런식으로 완전히 새로운 객체로 교체하자!!
-            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
-
-            // 값 타입 컬렉션 수정 : 치킨 => 한식
-            findMember.getFavoriteFoods().remove("치킨");
-            findMember.getFavoriteFoods().add("한식");    // 이런식으로 삭제하고 add 갈아끼워야 함.
+//            // 여기서 Member는 테이블이 아닌 Member Entity를 가리키는 것.
+//            List<Member> result = em.createQuery(
+//                    "select m from Member m where m.username like '%kim%'",
+//                    Member.class
+//            ).getResultList();
+//
+//            for (Member member : result) {
+//                System.out.println("member = " + member);
+//            }
 
 
-            // 값 타입 컬렉션 수정 : old1을 new Address로
-                // remove는 equals를 사용. 완전히 똑같은 객체를 넘겨주면 됨. :: 이래서 equals() override가 필수적인것!
-//            findMember.getAddressHistory().remove(new Address("old1", "street", "10000"));
-//            findMember.getAddressHistory().add(new Address("newCity1", "street", "10000"));
+//            //Criteria 사용 준비
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+//
+//            //루트 클래스 (조회를 시작할 클래스)
+//            Root<Member> m = query.from(Member.class);
+//
+//            //쿼리 생성 CriteriaQuery<Member>
+//            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+//            List<Member> resultList = em.createQuery(cq).getResultList();
+
+            // JPQL
+            // select m from Member m where m.age > 18
+//            JPAFactoryQuery query = new JPAQueryFactory(em);
+//            QMember m = QMember.member;
+//            List<Member> list =
+//                    query.selectFrom(m)
+//                            .where(m.age.gt(18))
+//                            .orderBy(m.name.desc())
+//                            .fetch();
+
+
+            String sql = "SELECT MEMBER_ID, city, street, zipcode, USERNAME FROM MEMBER";
+            List<Member> resultList =
+                    em.createNativeQuery(sql, Member.class).getResultList();
+
 
 
             tx.commit();
