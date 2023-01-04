@@ -1,5 +1,6 @@
 package hellojpa;
 
+import hellojpa.section7.AddressEntity;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -28,8 +29,10 @@ public class JpaMain {
             member.getFavoriteFoods().add("족발");
             member.getFavoriteFoods().add("피자");
 
-            member.getAddressHistory().add(new Address("old1", "street", "10000"));
-            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+//            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+//            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
 
             em.persist(member);
 
@@ -40,15 +43,21 @@ public class JpaMain {
             System.out.println("================= START =====================");
             Member findMember = em.find(Member.class, member.getId());
 
-            List<Address> addressHistory = findMember.getAddressHistory();
-            for (Address address : addressHistory) {
-                System.out.println("address.getCity() = " + address.getCity());
-            }
+            // homeCity -> newCity
+//            findMember.getHomeAddress().setCity("newCity");   // X
+            Address a = findMember.getHomeAddress();
+            // 이런식으로 완전히 새로운 객체로 교체하자!!
+            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
 
-            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-            for (String favoriteFood : favoriteFoods) {
-                System.out.println("favoriteFood = " + favoriteFood);
-            }
+            // 값 타입 컬렉션 수정 : 치킨 => 한식
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");    // 이런식으로 삭제하고 add 갈아끼워야 함.
+
+
+            // 값 타입 컬렉션 수정 : old1을 new Address로
+                // remove는 equals를 사용. 완전히 똑같은 객체를 넘겨주면 됨. :: 이래서 equals() override가 필수적인것!
+//            findMember.getAddressHistory().remove(new Address("old1", "street", "10000"));
+//            findMember.getAddressHistory().add(new Address("newCity1", "street", "10000"));
 
 
             tx.commit();
