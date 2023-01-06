@@ -15,6 +15,15 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", age=" + age +    // 양방향인 team은 지우기
+                '}';
+    }
+
     public Long getId() {
         return id;
     }
