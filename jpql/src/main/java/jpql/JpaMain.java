@@ -44,19 +44,20 @@ public class JpaMain {
             em.flush();     // 영속성 컨텍스트 clear
             em.clear();
 
-            String query = "select t From Team t join fetch t.members as m";
-            List<Team> teams = em.createQuery(query, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(1)
-                    .getResultList();
+//            String query = "Member.findByUsername";
+//            List<Member> members = em.createNamedQuery(query, Member.class)
+//                    .setParameter("username", member1.getUsername())
+//                    .getResultList();
+//
+//            for (Member member : members) {
+//                System.out.println("member = " + member);
+//            }
 
-            for (Team team : teams) {
-                System.out.println("team.getName() = " + team.getName() + "  |  members = " + team.getMembers().size());
-                for (Member member : team.getMembers()) {
-                    System.out.println("==> member.getUsername() = " + member.getUsername());
-                }
-            }
-
+            // 결과가 반영된 개수가 return
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+            Member findMember = em.find(Member.class, member1.getId());
+            System.out.println("findMember = " + findMember.getAge());
 
             tx.commit();
         } catch (Exception e) {
