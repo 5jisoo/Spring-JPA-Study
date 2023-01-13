@@ -1,6 +1,7 @@
 package jpql;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 public class JpaMain {
@@ -14,35 +15,48 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team1 = new Team();
+            team1.setName("teamA");
 
-
-            Team team = new Team();
-            team.setName("teamA");
-
-            Member member = new Member();
-            member.setUsername("관리자1");
-            member.setAge(10);
-            member.setType(MemberType.ADMIN);
+            Team team2 = new Team();
+            team2.setName("teamB");
 
             Member member1 = new Member();
-            member1.setUsername("관리자2");
+            member1.setUsername("회원1");
+            member1.setTeam(team1);
 
-            member.setTeam(team);
+            Member member2 = new Member();
+            member2.setUsername("회원2");
+            member2.setTeam(team1);
 
-            em.persist(team);
-            em.persist(member);
+            Member member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setTeam(team2);
+
+
+            em.persist(team1);
+            em.persist(team2);
+
             em.persist(member1);
+            em.persist(member2);
+            em.persist(member3);
 
             em.flush();     // 영속성 컨텍스트 clear
             em.clear();
 
-            String query = "select function('group_concat', m.username) From Member m";
+            String query = "select t From Team t join fetch t.members as m";
+            List<Team> teams = em.createQuery(query, Team.class)
+                    .setFirstResult(0)
+                    .setMaxResults(1)
+                    .getResultList();
 
-            List<String> resultList = em.createQuery(query, String.class).getResultList();
-
-            for (String s : resultList) {
-                System.out.println("s = " + s);
+            for (Team team : teams) {
+                System.out.println("team.getName() = " + team.getName() + "  |  members = " + team.getMembers().size());
+                for (Member member : team.getMembers()) {
+                    System.out.println("==> member.getUsername() = " + member.getUsername());
+                }
             }
+
 
             tx.commit();
         } catch (Exception e) {
