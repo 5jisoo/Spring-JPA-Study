@@ -2,6 +2,8 @@ package jpql;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 public class Member {
     @Id
@@ -11,9 +13,12 @@ public class Member {
     private String username;
     private int age;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
 
     @Override
     public String toString() {
@@ -22,6 +27,27 @@ public class Member {
                 ", username='" + username + '\'' +
                 ", age=" + age +    // 양방향인 team은 지우기
                 '}';
+    }
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
+    }
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public Long getId() {
