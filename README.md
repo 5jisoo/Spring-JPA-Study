@@ -2,8 +2,7 @@
 
 > [2022-2 ~] 스프링부트 JPA 공부 기록을 위한 저장소입니다. ✏️
 
-### ✍️ I'm recording what I learned ...
-
+- 공부 기록: 
 <a href="https://5ji-record.tistory.com/category/Server/Spring%20Boot%20JPA"><img src="https://img.shields.io/badge/5jiCoding-000000?style=for-the-badge&logo=tistory&logoColor=white"></a>
 
 |                                       | 폴더                               | 날짜            |
