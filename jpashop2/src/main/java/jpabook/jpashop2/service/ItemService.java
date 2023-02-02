@@ -1,5 +1,6 @@
 package jpabook.jpashop2.service;
 
+import jpabook.jpashop2.domain.item.Book;
 import jpabook.jpashop2.domain.item.Item;
 import jpabook.jpashop2.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,15 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    public List<Item> findItems(){
+    @Transactional
+    public void updateItem(Long itemId, String name, int price, int stockQuantity) {
+        Item findItem = itemRepository.findOne(itemId); // itemRepository에서 findOne으로 찾아온 findItem은 영속상태임.
+        findItem.setPrice(price);
+        findItem.setName(name);
+        findItem.setStockQuantity(stockQuantity);
+    }
+
+    public List<Item> findItems() {
         return itemRepository.findAll();
     }
 
