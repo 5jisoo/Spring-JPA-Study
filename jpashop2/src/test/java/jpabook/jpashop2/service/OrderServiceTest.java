@@ -86,7 +86,7 @@ public class OrderServiceTest {
         assertEquals("주문 취소시 재고는 다시 원상복구 한다.", 10, item.getStockQuantity());
 
     }
-    
+
     private Item createBook(String name, int orderPrice, int stockQuantity) {
         Item book = new Book();
         book.setName(name);
