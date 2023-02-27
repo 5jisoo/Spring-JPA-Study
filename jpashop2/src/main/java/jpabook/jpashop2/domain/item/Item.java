@@ -5,12 +5,14 @@ import jpabook.jpashop2.domain.Category;
 import jpabook.jpashop2.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.InheritanceType.*;
 
+@BatchSize(size = 100)
 @Entity
 @Getter @Setter
 @Inheritance(strategy = SINGLE_TABLE)
