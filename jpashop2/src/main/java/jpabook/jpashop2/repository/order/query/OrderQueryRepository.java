@@ -17,7 +17,7 @@ public class OrderQueryRepository {
         List<OrderQueryDto> result = findOrders();
 
         result.forEach(o -> {
-            // loop를 돌면서 컬렉션 부분은 직접 채워주고 있음.
+            // loop를 돌면서 컬렉션 부분은 직접 채워주고 있음. 1 + N 쿼리
             List<OrderItemQueryDto> orderItems = findOrderItems(o.getOrderId());
             o.setOrderItems(orderItems);
         });

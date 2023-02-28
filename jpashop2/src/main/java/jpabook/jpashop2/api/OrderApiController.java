@@ -28,6 +28,18 @@ public class OrderApiController {
     private final OrderRepository orderRepository;
     private final OrderQueryRepository orderQueryRepository;
 
+    /**
+     * 권장 순서
+     *
+     * 1. 엔티티 조회 방식으로 우선 접근
+     *  - 페치조인으로 쿼리 수를 최적화
+     *  - 컬렉션 최적화
+     *      1. 페이징 필요 => batch-fetch-size 사용하기
+     *      2. 페이징 필요 X => join fetch 사용
+     * 2. 엔티티 조회 방식으로 해결이 안되면 DTO 조회 방식 사용
+     * 3. DTO 조회 방식으로 해결이 안되면 NativeSQL or 스프링 JdbcTemplate
+     */
+
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
         List<Order> all = orderRepository.findAllByCriteria(new OrderSearch());
@@ -53,6 +65,7 @@ public class OrderApiController {
     }
 
     // 쿼리는 하나지만, 데이터 전송량이 많음.
+    // 페이징 불가
     @GetMapping("/api/v3/orders")
     public List<OrderDto> ordersV3() {
         List<Order> orders = orderRepository.findAllWithItem();
@@ -71,7 +84,7 @@ public class OrderApiController {
             @RequestParam(value = "offset", defaultValue = "0") int offset,
             @RequestParam(value = "limit", defaultValue = "100") int limit) {
 
-        // 여기서 페이징
+        // ToOne 여기서 페이징
         List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
 
         // default_batch_fetch_size 설정으로 빨라짐
