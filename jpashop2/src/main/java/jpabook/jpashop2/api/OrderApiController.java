@@ -10,6 +10,7 @@ import jpabook.jpashop2.repository.order.query.OrderFlatDto;
 import jpabook.jpashop2.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop2.repository.order.query.OrderQueryDto;
 import jpabook.jpashop2.repository.order.query.OrderQueryRepository;
+import jpabook.jpashop2.service.query.OrderQueryService;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -66,19 +67,18 @@ public class OrderApiController {
 
     // 쿼리는 하나지만, 데이터 전송량이 많음.
     // 페이징 불가
+
+    private final OrderQueryService orderQueryService;
     @GetMapping("/api/v3/orders")
-    public List<OrderDto> ordersV3() {
-        List<Order> orders = orderRepository.findAllWithItem();
-        List<OrderDto> result = orders.stream()
-                .map(o -> new OrderDto(o))
-                .collect(toList());
-        return result;
+    public List<jpabook.jpashop2.service.query.OrderDto> ordersV3() {
+        return orderQueryService.ordersV3();
     }
 
     /**
      * 페이징 가능
      */
     // 쿼리는 여러개지만, 데이터 전송량은 적다!
+
     @GetMapping("/api/v3.1/orders")
     public List<OrderDto> ordersV3_page(
             @RequestParam(value = "offset", defaultValue = "0") int offset,
