@@ -1,5 +1,6 @@
 package jpabook.jpashop2.api;
 
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jpabook.jpashop2.domain.Member;
